@@ -1,44 +1,17 @@
-# Advent of Code 2022 - Day 1
+# https://adventofcode.com/2022/day/2
 
-file = open('1.txt', 'r')
+with open('1.txt', 'r') as f: data = f.read()
 
-elf1 = 0
-elf2 = 0
-elf3 = 0
+data = data.split('\n\n')
 
-cur_cal = 0
+rows = [row.split() for row in data]
 
-while True:
+totals = [sum([int(i) for i in row]) for row in rows]
 
-    line = file.readline()
+totals.sort()
 
-    if not line:
-        break
-    elif line == "\n":
-        # I know this is not optimized at all.
-        # That's the quick and dirty way of doing it
-        if elf1 < elf2:
-            if elf1 < elf3:
-                if cur_cal > elf1:
-                    elf1 = cur_cal
-            else:
-                if cur_cal > elf3:
-                    elf3 = cur_cal
-        else:
-            if elf2 < elf3:
-                if cur_cal > elf2:
-                    elf2 = cur_cal
-            else:
-                if cur_cal > elf3:
-                    elf3 = cur_cal
-        cur_cal = 0
-    else:
-        cur_cal += int(line)
+# Part 1 answer
+print(totals[-1])
 
-print('Top 3 elfs are:')
-print('Elf1: ' + str(elf1))
-print('Elf2: ' + str(elf2))
-print('Elf3: ' + str(elf3))
-
-print('Sum of top elfs is: ' + str(elf1+elf2+elf3))
-
+# Part 2 answer
+print(sum(totals[-3:]))

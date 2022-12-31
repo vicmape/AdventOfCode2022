@@ -1,102 +1,57 @@
-# Advent of Code 2022 - Day 2
+# https://adventofcode.com/2022/day/2
+
 '''
             OPPONENT       YOU      POINTS
 Rock            A           X          1
 Paper           B           Y          2
-Scissors        C           X          3
+Scissors        C           Z          3
 
 0 - Loose
 3 - Draw
 6 - Win
 '''
 
-score = 0
+res_map1 = {
+    'A': {'X': 3, 'Y': 6, 'Z': 0},
+    'B': {'X': 0, 'Y': 3, 'Z': 6},
+    'C': {'X': 6, 'Y': 0, 'Z': 3}
+}
+res_map2 = {
+    'A': {'A':3, 'B':6, 'C':0},
+    'B': {'A':0, 'B':3, 'C':6},
+    'C': {'A':6, 'B':0, 'C':3},
+}
+
+base_map1 = {'X': 1, 'Y': 2, 'Z': 3}
+
+base_map2 = {'A': 1, 'B': 2, 'C': 3}
+
+translation_map = {
+    'A': {'X':'C', 'Y':'A', 'Z':'B'},
+    'B': {'X':'A', 'Y':'B', 'Z':'C'},
+    'C': {'X':'B', 'Y':'C', 'Z':'A'},
+}
+
+with open('2.txt', 'r') as f: data = f.read()
+
+data = data.split('\n')[:-1]
+
+rows = [row.split(' ') for row in data]
 
 # Part 1
-with open('2.txt') as fp:
-    for line in fp:
-        round = line.split()
 
-        match round[0]:
-            case 'A':
-                match round[1]:
-                    case 'X':
-                        score += 3 # Draw
-                        score += 1 # for choosing rock
-                    case 'Y':
-                        score += 6 # Win
-                        score += 2 # for choosig paper
-                    case 'Z':
-                        score += 0 # Loose
-                        score += 3 # for choosig scissors
-            case 'B':
-                match round[1]:
-                    case 'X':
-                        score += 0 # Loose
-                        score += 1 # for choosing rock
-                    case 'Y':
-                        score += 3 # Draw
-                        score += 2 # for choosig paper
-                    case 'Z':
-                        score += 6 # Win
-                        score += 3 # for choosig scissors
-            case 'C':
-                match round[1]:
-                    case 'X':
-                        score += 6 # Win
-                        score += 1 # for choosing rock
-                    case 'Y':
-                        score += 0 # Loose
-                        score += 2 # for choosig paper
-                    case 'Z':
-                        score += 3 # Draw
-                        score += 3 # for choosig scissors
+base1 = sum([base_map1[j] for i,j in rows])
 
-print ('My total score (part 1) is: ' + str(score))
+res1 = sum([res_map1[i][j] for i,j in rows])
 
-# Part 2
-# X I need to loose
-# Y I need to draw
-# Z I need to win
+print('Part 1:', base1 + res1)
 
-score = 0
+# Part 2 
 
-with open('2.txt') as fp:
-    for line in fp:
-        round = line.split()
+translation = [[i, translation_map[i][j]] for i,j in rows]
 
-        match round[1]:
-            # Loose
-            case 'X':
-                score += 0
-                match round[0]:
-                    case 'A':
-                        score +=3
-                    case 'B':
-                        score +=1
-                    case 'C':
-                        score +=2
+base2 = sum([base_map2[j] for i,j in translation])
 
-            # Draw
-            case 'Y':
-                score += 3
-                match round[0]:
-                    case 'A':
-                        score +=1
-                    case 'B':
-                        score +=2
-                    case 'C':
-                        score +=3
+res2 = sum([res_map2[i][j] for i, j in translation])
 
-            # Win
-            case 'Z':
-                score += 6
-                match round[0]:
-                    case 'A':
-                        score +=2
-                    case 'B':
-                        score +=3
-                    case 'C':
-                        score +=1
-
-print ('My total score (part 2) is: ' + str(score))
+print('Part 2:', base2 + res2)
